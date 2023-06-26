@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState, ChangeEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
     Col,
@@ -7,6 +7,7 @@ import {
     ListGroup,
     Card,
     Button,
+    Form,
 } from 'react-bootstrap';
 
 import VisualRating from '../components/VisualRating';
@@ -15,8 +16,14 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import MessageAlert from '../components/MessageAlert';
 
 const ProductDetailScreen = (): ReactElement => {
-    const { id: productId } = useParams();
+    const { id: productId} = useParams();
     const { data: product, error, isLoading } = useGetProductDetailsQuery(productId);
+    const [qty, setQty] = useState<number>(1);
+
+    const handleSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const qtyNum = Number(e.target.value);
+        setQty(qtyNum);
+    };
 
     return (
         <>
@@ -72,7 +79,11 @@ const ProductDetailScreen = (): ReactElement => {
                                         <Row>
                                             <Col>Qty</Col>
                                             <Col>
-                                                <div>5</div>
+                                                <Form.Control as="select" value={qty} onChange={handleSelectChange}>
+                                                    {[...Array(product.countInStock).keys()].map((k: number) => (
+                                                        <option value={k + 1} key={k + 1}>{k + 1}</option>
+                                                    ))}
+                                                </Form.Control>
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
