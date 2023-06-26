@@ -1,6 +1,5 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
 import {
     Col,
     Row,
@@ -10,23 +9,18 @@ import {
     Button,
 } from 'react-bootstrap';
 
-import { ProductInterface } from '../types/ProductInterface';
 import VisualRating from '../components/VisualRating';
+import { useGetProductDetailsQuery } from '../slices/productsApiSlice';
 
 const ProductDetailScreen = (): ReactElement => {
     const { id: productId } = useParams();
-    const [product, setProduct]
-        = useState<ProductInterface | null>(null);
-
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const { data } = await axios.get(`/api/products/${productId}`);
-            setProduct(data);
-        };
-        void fetchProduct();
-    }, [productId]);
+    const { data: product, error, isLoading } = useGetProductDetailsQuery(productId);
 
     if (!product) return <div>No product found</div>;
+
+    if (error) return <div>Some error occurred!</div>
+
+    if (isLoading) return <h2>Loading...</h2>
 
     return (
         <>
@@ -43,13 +37,13 @@ const ProductDetailScreen = (): ReactElement => {
                             <h3>{product?.name}</h3>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <VisualRating value={product.rating ?? 1} text={`${product?.numReviews} reviews`} />
+                            <VisualRating value={product?.rating ?? 1} text={`${product?.numReviews} reviews`} />
                         </ListGroup.Item>
                         <ListGroup.Item>
                             Price: ${product?.price}
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            Description: {product.description}
+                            Description: {product?.description}
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
@@ -60,7 +54,7 @@ const ProductDetailScreen = (): ReactElement => {
                                 <Row>
                                     <Col>Price:</Col>
                                     <Col>
-                                        <strong>${product.price}</strong>
+                                        <strong>${product?.price}</strong>
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
@@ -68,11 +62,11 @@ const ProductDetailScreen = (): ReactElement => {
                                 <Row>
                                     <Col>Status:</Col>
                                     <Col>
-                                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                                        {product && product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
-                            {product?.countInStock > 0 && (
+                            {product && product?.countInStock > 0 && (
                                 <ListGroup.Item>
                                     <Row>
                                         <Col>Qty</Col>
