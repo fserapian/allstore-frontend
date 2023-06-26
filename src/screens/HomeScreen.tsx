@@ -4,6 +4,7 @@ import React, { ReactElement } from 'react';
 import { ProductInterface } from '../types/ProductInterface';
 import ProductItem from '../components/ProductItem';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const HomeScreen = (): ReactElement => {
     const { data: products, error, isLoading } = useGetProductsQuery();
@@ -12,7 +13,7 @@ const HomeScreen = (): ReactElement => {
         return error ? (
             <div>Something went wrong!</div>
         ) : isLoading ? (
-            <h2>Loading...</h2>
+            <LoadingSpinner />
         ) : (
             <Row>
                 {products?.map((product: ProductInterface) => (
