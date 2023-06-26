@@ -5,13 +5,14 @@ import { ProductInterface } from '../types/ProductInterface';
 import ProductItem from '../components/ProductItem';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
+import MessageAlert from '../components/MessageAlert';
 
 const HomeScreen = (): ReactElement => {
     const { data: products, error, isLoading } = useGetProductsQuery();
 
     const renderProducts = (): ReactElement => {
         return error ? (
-            <div>Something went wrong!</div>
+            <MessageAlert variant="danger">Something went wrong!</MessageAlert>
         ) : isLoading ? (
             <LoadingSpinner />
         ) : (
