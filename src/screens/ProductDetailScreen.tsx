@@ -12,6 +12,7 @@ import {
 import VisualRating from '../components/VisualRating';
 import { useGetProductDetailsQuery } from '../slices/productsApiSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
+import MessageAlert from '../components/MessageAlert';
 
 const ProductDetailScreen = (): ReactElement => {
     const { id: productId } = useParams();
@@ -23,7 +24,7 @@ const ProductDetailScreen = (): ReactElement => {
                 Go Back
             </Link>
             {error ? (
-                <div>Some error occurred!</div>
+                <MessageAlert variant="danger">Some error occurred!</MessageAlert>
             ) : isLoading ? (
                 <LoadingSpinner />
             ) : (
