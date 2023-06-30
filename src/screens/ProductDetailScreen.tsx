@@ -14,15 +14,24 @@ import VisualRating from '../components/VisualRating';
 import { useGetProductDetailsQuery } from '../slices/productsApiSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MessageAlert from '../components/MessageAlert';
+import { addToCart } from '../slices/cartSlice';
+import { useAppDispatch } from '../hooks';
+import { CartItemInterface } from '../types/CartItemInterface';
+import { ProductInterface } from '../types/ProductInterface';
 
 const ProductDetailScreen = (): ReactElement => {
     const { id: productId} = useParams();
     const { data: product, error, isLoading } = useGetProductDetailsQuery(productId);
     const [qty, setQty] = useState<number>(1);
+    const dispatch = useAppDispatch();
 
     const handleSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const qtyNum = Number(e.target.value);
-        setQty(qtyNum);
+        setQty(Number(e.target.value));
+    };
+
+    const handleAddToCart = () => {
+        const cartItem: CartItemInterface = { ...product as ProductInterface, qty };
+        dispatch(addToCart(cartItem));
     };
 
     return (
@@ -93,6 +102,7 @@ const ProductDetailScreen = (): ReactElement => {
                                         <Button
                                             variant="primary"
                                             disabled={product?.countInStock === 0}
+                                            onClick={handleAddToCart}
                                         >
                                             Add To Card
                                         </Button>
