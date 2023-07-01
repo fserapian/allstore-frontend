@@ -11,7 +11,7 @@ import MessageAlert from '../components/MessageAlert';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { Form, ListGroup } from 'react-bootstrap';
 import { CartItemInterface } from '../types/CartItemInterface';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, deleteFromCart } from '../slices/cartSlice';
 
 const CartScreen = () => {
     const { cartItems } = useAppSelector((state) => state.cart);
@@ -20,6 +20,10 @@ const CartScreen = () => {
     const handleChange = (item: CartItemInterface, qty: number) => {
         const cartItem: CartItemInterface = { ...item, qty };
         dispatch(addToCart(cartItem));
+    };
+
+    const handleDelete = (productId: string) => {
+        dispatch(deleteFromCart(productId));
     };
 
     return (
@@ -48,7 +52,7 @@ const CartScreen = () => {
                                         </Form.Control>
                                     </Col>
                                     <Col md={2}>
-                                        <Button type="button" variant="light"><FaTrash /></Button>
+                                        <Button type="button" variant="light" onClick={() => handleDelete(item._id)}><FaTrash /></Button>
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
