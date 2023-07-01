@@ -8,15 +8,18 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import MessageAlert from '../components/MessageAlert';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { Form, ListGroup } from 'react-bootstrap';
 import { CartItemInterface } from '../types/CartItemInterface';
+import { addToCart } from '../slices/cartSlice';
 
 const CartScreen = () => {
     const { cartItems } = useAppSelector((state) => state.cart);
+    const dispatch = useAppDispatch();
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-
+    const handleChange = (item: CartItemInterface, qty: number) => {
+        const cartItem: CartItemInterface = { ...item, qty };
+        dispatch(addToCart(cartItem));
     };
 
     return (
@@ -38,7 +41,7 @@ const CartScreen = () => {
                                     </Col>
                                     <Col md={2}>${item.price}</Col>
                                     <Col md={2}>
-                                        <Form.Control as="select" value={item.qty} onChange={handleChange}>
+                                        <Form.Control as="select" value={item.qty} onChange={(e) => handleChange(item, Number(e.target.value))}>
                                             {[...Array(item.countInStock).keys()].map((k: number) => (
                                                 <option value={k + 1} key={k + 1}>{k + 1}</option>
                                             ))}
@@ -60,7 +63,7 @@ const CartScreen = () => {
                             <h2>
                                 Subtotal ({cartItems.reduce((acc: number, item: CartItemInterface) => acc + item.qty, 0)}) items
                             </h2>
-                            ${cartItems.reduce((acc: number, item: CartItemInterface) => acc + item.price * item.qty, 0).toFixed(2)}
+                            <div>${cartItems.reduce((acc: number, item: CartItemInterface) => acc + item.price * item.qty, 0).toFixed(2)}</div>
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <Button type="button" className="btn-block" disabled={cartItems.length === 0} variant="dark">
