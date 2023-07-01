@@ -1,5 +1,5 @@
 import { ReactElement, useState, ChangeEvent } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
     Col,
     Row,
@@ -24,14 +24,16 @@ const ProductDetailScreen = (): ReactElement => {
     const { data: product, error, isLoading } = useGetProductDetailsQuery(productId);
     const [qty, setQty] = useState<number>(1);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    const handleSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setQty(Number(e.target.value));
+    const handleSelectChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setQty(Number(event.target.value));
     };
 
     const handleAddToCart = () => {
         const cartItem: CartItemInterface = { ...product as ProductInterface, qty };
         dispatch(addToCart(cartItem));
+        navigate('/cart');
     };
 
     return (
