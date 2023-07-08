@@ -30,7 +30,6 @@ const MainHeader = () => {
                                     <Badge pill bg="secondary" style={{ marginLeft: '0.2rem' }}>{cartItems.length > 0 && getCartItemsCount(cartItems)}</Badge>
                                 </Nav.Link>
                             </LinkContainer>
-
                             <LinkContainer to="/login">
                                 <Nav.Link>Sign In</Nav.Link>
                             </LinkContainer>
