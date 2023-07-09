@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { toast } from 'react-toastify';
 
 import FormContainer from '../components/FormContainer';
 import { useLoginMutation } from '../slices/usersApiSlice';
@@ -12,6 +13,14 @@ import { UserInfoInterface } from '../types/UserInfoInterface';
 import { useAppDispatch } from '../hooks';
 import LoadingSpinner from '../components/LoadingSpinner';
 
+type ErrorResponseInterface = {
+    status: number;
+    data: {
+        message: string;
+        stack: string;
+    }
+}
+
 const LoginScreen = (): ReactElement => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -19,14 +28,14 @@ const LoginScreen = (): ReactElement => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         try {
             const userInfo: UserInfoInterface = await login({ email, password }).unwrap();
             dispatch(setCredentials(userInfo));
             navigate('/');
-        } catch (err) {
-            console.log('error: ', err);
+        } catch (err: any) {
+            toast.error(err?.data?.message || err.error || 'Some error!');
         }
     };
 

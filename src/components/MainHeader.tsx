@@ -1,20 +1,23 @@
+import { ReactElement } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { clearCredentials } from '../slices/authSlice';
 import { CartItemInterface } from '../types/CartItemInterface';
 
-const MainHeader = () => {
+const MainHeader = (): ReactElement => {
     const { cartItems } = useAppSelector((state) => state.cart);
     const { userInfo } = useAppSelector((state) => state.auth);
     const [logout] = useLogoutMutation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const getCartItemsCount = (cartItems: CartItemInterface[]) => {
         return cartItems.reduce((acc: number, item: CartItemInterface) => acc + item.qty, 0);
@@ -24,6 +27,7 @@ const MainHeader = () => {
         try {
             await logout();
             dispatch(clearCredentials());
+            navigate('/login');
         } catch (err) {
             console.error('Error: ', err);
         }
