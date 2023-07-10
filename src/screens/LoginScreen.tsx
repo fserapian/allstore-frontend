@@ -13,14 +13,6 @@ import { UserInfoInterface } from '../types/UserInfoInterface';
 import { useAppDispatch } from '../hooks';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-type ErrorResponseInterface = {
-    status: number;
-    data: {
-        message: string;
-        stack: string;
-    }
-}
-
 const LoginScreen = (): ReactElement => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');

@@ -7,6 +7,10 @@ export interface LoginCredentialsInterface {
     password: string;
 }
 
+export interface RegisterCredentialsInterface extends LoginCredentialsInterface {
+    name: string;
+}
+
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<UserInfoInterface, LoginCredentialsInterface>({
@@ -22,10 +26,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
             }),
         }),
+        register: builder.mutation<UserInfoInterface, RegisterCredentialsInterface>({
+            query: (data: RegisterCredentialsInterface) => ({
+                url: USERS_URL,
+                method: 'POST',
+                body: data,
+            }),
+        }),
     }),
 });
 
 export const {
     useLoginMutation,
     useLogoutMutation,
+    useRegisterMutation,
 } = usersApiSlice;
