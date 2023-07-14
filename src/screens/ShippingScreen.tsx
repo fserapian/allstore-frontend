@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import FormContainer from '../components/FormContainer';
+import CheckoutSteps from '../components/CheckoutSteps';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { saveShippingAddress } from '../slices/cartSlice';
 import { ShippingAddressInterface } from '../types/ShippingAddressInterface';
@@ -27,6 +28,7 @@ const ShippingScreen = (): ReactElement => {
 
     return (
         <FormContainer>
+            <CheckoutSteps step1 step2 />
             <h1>Shipping</h1>
             <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="address" className="my-3">
