@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { Form, ListGroup } from 'react-bootstrap';
 import { CartItemInterface } from '../types/CartItemInterface';
 import { addToCart, deleteFromCart } from '../slices/cartSlice';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const CartScreen = () => {
     const { cartItems } = useAppSelector((state) => state.cart);
@@ -69,9 +70,16 @@ const CartScreen = () => {
                             <div>${cartItems.reduce((acc: number, item: CartItemInterface) => acc + item.price * item.qty, 0).toFixed(2)}</div>
                         </ListGroup.Item>
                         <ListGroup.Item>
-                            <Button type="button" className="btn-block" disabled={cartItems.length === 0} variant="dark">
-                                Proceed to checkout
-                            </Button>
+                            <LinkContainer to="/shipping">
+                                <Button
+                                    type="button"
+                                    className="btn-block"
+                                    disabled={cartItems.length === 0}
+                                    variant="dark"
+                                >
+                                    Proceed to checkout
+                                </Button>
+                            </LinkContainer>
                         </ListGroup.Item>
                     </ListGroup>
                 </Card>

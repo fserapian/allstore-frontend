@@ -1,4 +1,5 @@
 import { CartItemInterface } from './CartItemInterface';
+import { ShippingAddressInterface } from './ShippingAddressInterface';
 
 export interface CartStateInterface {
     cartItems: CartItemInterface[];
@@ -6,4 +7,5 @@ export interface CartStateInterface {
     shippingPrice: string;
     taxPrice: string;
     totalPrice: string;
+    shippingAddress: ShippingAddressInterface;
 }
