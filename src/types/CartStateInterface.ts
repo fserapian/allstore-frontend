@@ -8,4 +8,5 @@ export interface CartStateInterface {
     taxPrice: string;
     totalPrice: string;
     shippingAddress: ShippingAddressInterface;
+    paymentMethod: string;
 }
