@@ -8,7 +8,7 @@ type MessageAlertProps = {
 
 const MessageAlert = ({ variant = 'info', children }: MessageAlertProps): ReactElement => {
     return (
-        <Alert variant={variant}>
+        <Alert variant={variant} className="m-0">
             {children}
         </Alert>
     );

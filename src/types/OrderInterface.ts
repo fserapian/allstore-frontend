@@ -1,13 +1,14 @@
-import { OrderItemInterface } from './OrderItemInterface';
 import { ShippingAddressInterface } from './ShippingAddressInterface';
+import { CartItemInterface } from './CartItemInterface';
 
 export interface OrderInterface {
-    orderItems: OrderItemInterface[];
+    _id?: string;
+    orderItems: CartItemInterface[];
     shippingAddress: ShippingAddressInterface;
     paymentMethod: string;
     paymentResult?: string;
-    itemsPrice: number;
-    taxPrice: string;
+    itemsPrice: string;
     shippingPrice: string;
+    taxPrice: string;
     totalPrice: string;
 }

@@ -11,6 +11,7 @@ const initialState: CartStateInterface = localStorage.getItem('cart')
         cartItems: [],
         itemsPrice: '',
         shippingPrice: '',
+        taxPrice: '',
         totalPrice: '',
         shippingAddress: { address: '', city: '', postalCode: '', country: '' },
         paymentMethod: '',
@@ -56,5 +57,6 @@ export const {
     deleteFromCart,
     saveShippingAddress,
     savePaymentMethod,
+    clearCartItems,
 } = cartSlice.actions;
 export default cartSlice.reducer;
