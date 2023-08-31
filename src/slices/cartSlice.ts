@@ -14,7 +14,7 @@ const initialState: CartStateInterface = localStorage.getItem('cart')
         taxPrice: '',
         totalPrice: '',
         shippingAddress: { address: '', city: '', postalCode: '', country: '' },
-        paymentMethod: '',
+        paymentMethod: 'paypal',
     };
 
 const cartSlice = createSlice({

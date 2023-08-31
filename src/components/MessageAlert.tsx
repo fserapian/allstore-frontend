@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import { Alert } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert';
 
 type MessageAlertProps = {
     variant?: string,

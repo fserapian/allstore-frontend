@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, ReactElement, useState } from 'react';
+import { ChangeEvent, FormEvent, ReactElement, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { savePaymentMethod } from '../slices/cartSlice';
 
 
@@ -14,6 +14,15 @@ const PaymentScreen = (): ReactElement => {
     const [paymentMethod, setPaymentMethod] = useState('paypal');
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const cart = useAppSelector((state) => state.cart);
+    const { shippingAddress } = cart;
+
+    // If we don't have a shipping address navigate to shipping screen to add one
+    useEffect(() => {
+        if (!shippingAddress) {
+            navigate('/shipping');
+        }
+    }, [navigate, shippingAddress]);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();

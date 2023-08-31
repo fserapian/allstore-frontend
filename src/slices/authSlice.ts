@@ -15,7 +15,7 @@ const authSlice = createSlice({
             state.userInfo = action.payload;
             localStorage.setItem('userInfo', JSON.stringify(action.payload));
         },
-        // Logout from frontend
+        // Logout in frontend
         clearCredentials: (state, action: PayloadAction<void>) => {
             state.userInfo = null;
             localStorage.removeItem('userInfo');

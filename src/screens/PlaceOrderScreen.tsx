@@ -15,6 +15,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useCreateOrderMutation } from '../slices/ordersApiSlice';
 import { OrderInterface } from '../types/OrderInterface';
 import { clearCartItems } from '../slices/cartSlice';
+import { OrderItemInterface } from '../types/OrderItemInterface';
+import { toast } from 'react-toastify';
 
 const PlaceOrderScreen = (): ReactElement => {
     const {
@@ -38,19 +40,32 @@ const PlaceOrderScreen = (): ReactElement => {
         }
     }, [navigate, paymentMethod, shippingAddress.address]);
 
+    // Extract orderItems
+    const orderItems: OrderItemInterface[] = cartItems.map((cartItem: CartItemInterface) => ({
+        name: cartItem.name,
+        qty: cartItem.qty,
+        image: cartItem.image,
+        price: cartItem.price,
+        _id: cartItem._id,
+    }));
+
     const handlePlaceOrder = async () => {
-        const newOrder: OrderInterface = {
-            orderItems: cartItems,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            shippingPrice,
-            taxPrice,
-            totalPrice,
-        };
-        const createdOrder = await createOrder(newOrder).unwrap();
-        dispatch(clearCartItems());
-        navigate(`/order/${createdOrder._id}`);
+        try {
+            const newOrder: OrderInterface = {
+                orderItems,
+                shippingAddress,
+                paymentMethod,
+                itemsPrice,
+                shippingPrice,
+                taxPrice,
+                totalPrice,
+            };
+            const createdOrder = await createOrder(newOrder).unwrap();
+            dispatch(clearCartItems());
+            navigate(`/order/${createdOrder._id}`);
+        } catch (err: any) {
+            toast.error(err);
+        }
     };
 
     return (
@@ -133,8 +148,8 @@ const PlaceOrderScreen = (): ReactElement => {
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
-                                {error && (
-                                    <MessageAlert>An error here</MessageAlert>
+                                {error && 'status' in error && (
+                                    <MessageAlert>{(error.data as any).message}</MessageAlert>
                                 )}
                             </ListGroup.Item>
                             <ListGroup.Item>
