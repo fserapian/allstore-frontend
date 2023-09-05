@@ -1,4 +1,4 @@
-import { ReactElement, FormEvent, useState } from 'react';
+import { ReactElement, FormEvent, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +10,7 @@ import FormContainer from '../components/FormContainer';
 import { useLoginMutation } from '../slices/usersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { UserInfoInterface } from '../types/UserInfoInterface';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const LoginScreen = (): ReactElement => {
@@ -19,6 +19,7 @@ const LoginScreen = (): ReactElement => {
     const [login, { isLoading }] = useLoginMutation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const { userInfo } = useAppSelector((state) => state.auth);
 
     const handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -30,6 +31,12 @@ const LoginScreen = (): ReactElement => {
             toast.error(err?.data?.message || err.error || 'Some error!');
         }
     };
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate('/');
+        }
+    }, [navigate, userInfo]);
 
     return (
         <FormContainer>
