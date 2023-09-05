@@ -11,6 +11,13 @@ export interface RegisterCredentialsInterface extends LoginCredentialsInterface 
     name: string;
 }
 
+export interface UpdateProfileRequestInterface {
+    _id?: string;
+    name: string;
+    email: string;
+    password?: string;
+}
+
 export const usersApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<UserInfoInterface, LoginCredentialsInterface>({
@@ -33,6 +40,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
+        updateProfile: builder.mutation<UserInfoInterface, UpdateProfileRequestInterface>({
+            query: (data: UpdateProfileRequestInterface) => ({
+                url: `${USERS_URL}/profile`,
+                method: 'PUT',
+                body: { ...data },
+            }),
+        }),
     }),
 });
 
@@ -40,4 +54,5 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useRegisterMutation,
+    useUpdateProfileMutation,
 } = usersApiSlice;

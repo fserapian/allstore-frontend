@@ -18,4 +18,6 @@ export interface OrderInterface {
     deliveredAt?: string,
     isPaid?: boolean,
     paidAt?: string,
+    createdAt?: string,
+    updatedAt?: string,
 }
