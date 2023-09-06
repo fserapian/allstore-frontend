@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
