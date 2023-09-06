@@ -35,6 +35,17 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                 url: `${ORDERS_URL}/mine`,
             }),
         }),
+        getOrders: builder.query<OrderInterface[], void>({
+            query: () => ({
+                url: ORDERS_URL,
+            }),
+        }),
+        deliverOrder: builder.mutation<OrderInterface, string | undefined>({
+            query: (orderId) => ({
+                url: `${ORDERS_URL}/${orderId}/deliver`,
+                method: 'PUT',
+            }),
+        }),
     }),
 });
 
@@ -44,4 +55,6 @@ export const {
     usePayOrderMutation,
     useGetPayPalClientIdQuery,
     useGetMyOrdersQuery,
+    useGetOrdersQuery,
+    useDeliverOrderMutation,
 } = ordersApiSlice;

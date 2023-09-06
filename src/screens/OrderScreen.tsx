@@ -3,7 +3,11 @@ import { useGetOrderDetailsQuery } from '../slices/ordersApiSlice';
 import { useParams, Link } from 'react-router-dom';
 import MessageAlert from '../components/MessageAlert';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { usePayOrderMutation, useGetPayPalClientIdQuery } from '../slices/ordersApiSlice';
+import {
+    usePayOrderMutation,
+    useGetPayPalClientIdQuery,
+    useDeliverOrderMutation,
+} from '../slices/ordersApiSlice';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -25,6 +29,8 @@ const OrderScreen = () => {
     } = useGetOrderDetailsQuery(orderId);
 
     const [payOrder, { isLoading: loadingPayOrder }] = usePayOrderMutation();
+
+    const [deliverOrder, { isLoading: loadingDeliverOrder }] = useDeliverOrderMutation();
 
     const [{ isPending }, payPalDispatch] = usePayPalScriptReducer();
 
@@ -72,6 +78,16 @@ const OrderScreen = () => {
         toast.error('ERROR ' + err.message);
     };
 
+    const handleDeliverOrder = async () => {
+        try {
+            await deliverOrder(orderId);
+            refetch();
+            toast.success('Order delivered');
+        } catch (err) {
+            toast.error('Cannot deliver order');
+        }
+    };
+
     useEffect(() => {
         if (!errorPayPal && !loadingPayPal && dataPayPal?.clientId) {
             const loadPayPalScript = async () => {
@@ -117,7 +133,7 @@ const OrderScreen = () => {
                             {order?.shippingAddress.country}
                         </p>
                         {order?.isDelivered ?
-                            <MessageAlert variant="sucess">Delivered at {order?.deliveredAt}</MessageAlert> :
+                            <MessageAlert variant="success">Delivered at {order?.deliveredAt}</MessageAlert> :
                             <MessageAlert variant="danger">Not Delivered</MessageAlert>}
                     </ListGroup.Item>
                     <ListGroup.Item>
@@ -174,7 +190,6 @@ const OrderScreen = () => {
                                 <Col>Total</Col>
                                 <Col>${order?.totalPrice}</Col>
                             </Row>
-
                             {!order?.isPaid && (
                                 <ListGroup.Item>
                                     {loadingPayOrder && <LoadingSpinner />}
@@ -195,8 +210,19 @@ const OrderScreen = () => {
                                     )}
                                 </ListGroup.Item>
                             )}
-
-                            {/* Mark as delivered placeholder */}
+                            {loadingDeliverOrder && <LoadingSpinner />}
+                            {userInfo && userInfo.isAdmin && order?.isPaid && !order?.isDelivered && (
+                                <ListGroup.Item>
+                                    <Button
+                                        variant="dark"
+                                        type="button"
+                                        className="btn btn-block"
+                                        onClick={handleDeliverOrder}
+                                    >
+                                        Mark as delivered
+                                    </Button>
+                                </ListGroup.Item>
+                            )}
                         </ListGroup.Item>
                     </ListGroup>
                 </Card>
