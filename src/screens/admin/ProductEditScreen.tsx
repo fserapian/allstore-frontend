@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import {
     useGetProductDetailsQuery,
     useUpdateProductMutation,
+    useUploadProductImageMutation,
 } from '../../slices/productsApiSlice';
 import FormContainer from '../../components/FormContainer';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -38,6 +39,8 @@ const ProductEditScreen = (): ReactElement => {
         { isLoading: loadingUpdateProduct },
     ] = useUpdateProductMutation();
 
+    const [uploadProductImage, { isLoading: loadingUploadImage }] = useUploadProductImageMutation();
+
     useEffect(() => {
         if (product) {
             setName(product.name);
@@ -61,7 +64,7 @@ const ProductEditScreen = (): ReactElement => {
             category,
             countInStock,
             description,
-        }
+        };
 
         try {
             await updateProduct(productData);
@@ -69,6 +72,23 @@ const ProductEditScreen = (): ReactElement => {
             navigate('/admin/product-list');
         } catch (err) {
             toast.error('Cannot update product');
+        }
+    };
+
+    const handleUploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+
+        try {
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success(res.message);
+            setImage(res.image);
+        } catch (err) {
+            toast.error('Cannot upload image');
         }
     };
 
@@ -108,17 +128,23 @@ const ProductEditScreen = (): ReactElement => {
                             >
                             </Form.Control>
                         </Form.Group>
-                        {/*<Form.Group>*/}
-                        {/*    <Form.Label>Image</Form.Label>*/}
-                        {/*    <Form.Control*/}
-                        {/*        type="text"*/}
-                        {/*        placeholder="Enter image"*/}
-                        {/*        name="image"*/}
-                        {/*        value={editProductForm.image}*/}
-                        {/*        onChange={handleChange}*/}
-                        {/*    >*/}
-                        {/*    </Form.Control>*/}
-                        {/*</Form.Group>*/}
+                        <Form.Group controlId="image" className="my-2">
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter image URL"
+                                name="image"
+                                value={image}
+                                onChange={(e) => setImage(e.target.value)}
+                            >
+                            </Form.Control>
+                            <Form.Control
+                                type="file"
+                                placeholder="Choose file"
+                                onChange={handleUploadFile}
+                            >
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group controlId="brand" className="my-2">
                             <Form.Label>Brand</Form.Label>
                             <Form.Control

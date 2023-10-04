@@ -7,7 +7,11 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { toast } from 'react-toastify';
 
-import { useGetProductsQuery, useCreateProductMutation } from '../../slices/productsApiSlice';
+import {
+    useGetProductsQuery,
+    useCreateProductMutation,
+    useDeleteProductMutation,
+} from '../../slices/productsApiSlice';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import MessageAlert from '../../components/MessageAlert';
 import { ProductInterface } from '../../types/ProductInterface';
@@ -25,8 +29,18 @@ const ProductListScreen = (): ReactElement => {
         { isLoading: loadingCreateProduct, error: errorCreateProduct },
     ] = useCreateProductMutation();
 
-    const handleDeleteProduct = (productId: string) => {
-        console.log('DELETE ' + productId);
+    const [deleteProduct, { isLoading: loadingDeleteProduct }] = useDeleteProductMutation();
+
+    const handleDeleteProduct = async (productId: string) => {
+        if (window.confirm('Are you sure?')) {
+            try {
+                await deleteProduct(productId);
+                refetchProducts();
+                toast.success('Product deleted');
+            } catch (err) {
+                toast.error('Cannot delete product');
+            }
+        }
     };
 
     const handleCreateProduct = async () => {
@@ -54,6 +68,7 @@ const ProductListScreen = (): ReactElement => {
                 </Col>
             </Row>
             {loadingCreateProduct && <LoadingSpinner />}
+            {loadingDeleteProduct && <LoadingSpinner />}
             {errorCreateProduct && <MessageAlert variant="danger">Cannot create product</MessageAlert>}
             {loadingProduct ? (
                 <LoadingSpinner />

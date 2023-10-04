@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-import { PRODUCTS_URL } from '../constants';
+import { PRODUCTS_URL, UPLOAD_URL } from '../constants';
 import { ProductInterface } from '../types/ProductInterface';
 
 export const productsApiSlice = apiSlice.injectEndpoints({
@@ -33,6 +33,19 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['Product'],
         }),
+        uploadProductImage: builder.mutation<any, any>({
+            query: (data) => ({
+                url: UPLOAD_URL,
+                method: 'POST',
+                body: data,
+            }),
+        }),
+        deleteProduct: builder.mutation<{ message: string }, string | undefined>({
+            query: (id: string | undefined) => ({
+                url: `${PRODUCTS_URL}/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -41,4 +54,6 @@ export const {
     useGetProductDetailsQuery,
     useCreateProductMutation,
     useUpdateProductMutation,
+    useUploadProductImageMutation,
+    useDeleteProductMutation,
 } = productsApiSlice;
