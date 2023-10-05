@@ -5,9 +5,11 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { toast } from 'react-toastify';
 
 import {
     useGetUsersQuery,
+    useDeleteUserMutation,
 } from '../../slices/usersApiSlice';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import MessageAlert from '../../components/MessageAlert';
@@ -21,7 +23,19 @@ const UserListScreen = (): ReactElement => {
         refetch: refreshUsers,
     } = useGetUsersQuery();
 
-    console.log('data', users);
+    const [deleteUser, { isLoading: loadingDeleteUser }] = useDeleteUserMutation();
+
+    const handleDelete = async (userId: string) => {
+        if (window.confirm('are you sure')) {
+            try {
+                await deleteUser(userId);
+                refreshUsers();
+                toast.success('User deleted');
+            } catch (err) {
+                toast.error('Cannot delete the user');
+            }
+        }
+    };
 
     return (
         <>
@@ -35,6 +49,7 @@ const UserListScreen = (): ReactElement => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDeleteUser && <LoadingSpinner />}
             {loadingUsers ? (
                 <LoadingSpinner />
             ) : errorGetUsers ? (
@@ -68,7 +83,7 @@ const UserListScreen = (): ReactElement => {
                                     <Button
                                         className="btn-sm mx-2"
                                         variant="danger"
-                                        onClick={() => {}}
+                                        onClick={() => handleDelete(user._id)}
                                     >
                                         <FaTrash />
                                     </Button>
