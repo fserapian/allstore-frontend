@@ -4,7 +4,7 @@ import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa';
 
 type VisualRatingProps = {
     value: number,
-    text: string,
+    text?: string,
     color?: string,
 };
 

@@ -13,6 +13,7 @@ const products: ProductInterface[] = [
         countInStock: 3,
         rating: 4.5,
         numReviews: 4,
+        reviews: [],
     },
     {
         _id: '2',
@@ -26,6 +27,7 @@ const products: ProductInterface[] = [
         countInStock: 10,
         rating: 4.0,
         numReviews: 4,
+        reviews: [],
     },
     {
         _id: '3',
@@ -39,6 +41,7 @@ const products: ProductInterface[] = [
         countInStock: 5,
         rating: 3,
         numReviews: 3,
+        reviews: [],
     },
     {
         _id: '4',
@@ -52,6 +55,7 @@ const products: ProductInterface[] = [
         countInStock: 10,
         rating: 5,
         numReviews: 3,
+        reviews: [],
     },
     {
         _id: '5',
@@ -65,6 +69,7 @@ const products: ProductInterface[] = [
         countInStock: 7,
         rating: 3.5,
         numReviews: 2,
+        reviews: [],
     },
     {
         _id: '6',
@@ -78,6 +83,7 @@ const products: ProductInterface[] = [
         countInStock: 0,
         rating: 4,
         numReviews: 4,
+        reviews: [],
     },
 ];
 

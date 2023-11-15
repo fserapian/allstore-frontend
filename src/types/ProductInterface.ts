@@ -1,3 +1,13 @@
+export interface ReviewInterface {
+    userId: string;
+    userName: string;
+    rating: number;
+    comment: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface ProductInterface {
     _id: string;
     name: string;
@@ -10,4 +20,5 @@ export interface ProductInterface {
     rating: number;
     numReviews: number;
     user?: string;
+    reviews: ReviewInterface[];
 }
