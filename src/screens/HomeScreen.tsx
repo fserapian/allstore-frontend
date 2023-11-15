@@ -1,5 +1,6 @@
 import { Row, Col } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { ProductInterface } from '../types/ProductInterface';
 import ProductItem from '../components/ProductItem';
@@ -8,11 +9,13 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import MessageAlert from '../components/MessageAlert';
 
 const HomeScreen = (): ReactElement => {
+    const { pageNumber } = useParams();
+
     const {
         data: { products } = {},
         error,
         isLoading,
-    } = useGetProductsQuery();
+    } = useGetProductsQuery({ pageNumber });
 
     const renderProducts = (): ReactElement => {
         return error ? (

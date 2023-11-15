@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
 import {
     useGetProductsQuery,
@@ -17,12 +18,14 @@ import MessageAlert from '../../components/MessageAlert';
 import { ProductInterface } from '../../types/ProductInterface';
 
 const ProductListScreen = (): ReactElement => {
+    const { pageNumber } = useParams();
+
     const {
         data: { products } = {},
         isLoading: loadingProduct,
         error: errorGetProduct,
         refetch: refetchProducts,
-    } = useGetProductsQuery();
+    } = useGetProductsQuery({ pageNumber });
 
     const [
         createProduct,
