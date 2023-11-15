@@ -18,7 +18,7 @@ import { ProductInterface } from '../../types/ProductInterface';
 
 const ProductListScreen = (): ReactElement => {
     const {
-        data: products,
+        data: { products } = {},
         isLoading: loadingProduct,
         error: errorGetProduct,
         refetch: refetchProducts,

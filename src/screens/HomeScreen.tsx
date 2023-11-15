@@ -8,7 +8,11 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import MessageAlert from '../components/MessageAlert';
 
 const HomeScreen = (): ReactElement => {
-    const { data: products, error, isLoading } = useGetProductsQuery();
+    const {
+        data: { products } = {},
+        error,
+        isLoading,
+    } = useGetProductsQuery();
 
     const renderProducts = (): ReactElement => {
         return error ? (
