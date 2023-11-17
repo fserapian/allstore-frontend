@@ -38,7 +38,7 @@ const MainHeader = (): ReactElement => {
             <Navbar bg="light" expand="md">
                 <Container>
                     <LinkContainer to="/">
-                        <Navbar.Brand>ProShop</Navbar.Brand>
+                        <Navbar.Brand>AllStore</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
