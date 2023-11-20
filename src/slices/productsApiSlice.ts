@@ -4,12 +4,14 @@ import { ProductInterface } from '../types/ProductInterface';
 
 export const productsApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getProducts: builder.query<{ products: ProductInterface[], page: number, pages: number }, {
-            pageNumber?: string
-        }>({
-            query: ({ pageNumber }) => ({
+        getProducts: builder.query<{ products: ProductInterface[], page: number, pages: number },
+            { pageNumber?: string, keyword?: string }>({
+            query: ({ pageNumber, keyword }) => ({
                 url: PRODUCTS_URL,
-                params: { pageNumber },
+                params: {
+                    pageNumber,
+                    keyword,
+                },
             }),
             providesTags: ['Product'],
             keepUnusedDataFor: 5,

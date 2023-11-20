@@ -10,13 +10,13 @@ import MessageAlert from '../components/MessageAlert';
 import PaginateList from '../components/PaginateList';
 
 const HomeScreen = (): ReactElement => {
-    const { pageNumber } = useParams();
+    const { pageNumber, keyword } = useParams();
 
     const {
         data: { products, page, pages } = {},
         error,
         isLoading,
-    } = useGetProductsQuery({ pageNumber });
+    } = useGetProductsQuery({ pageNumber, keyword });
 
     const renderProducts = (): ReactElement => {
         return error ? (
@@ -37,7 +37,7 @@ const HomeScreen = (): ReactElement => {
         <div className="home-screen">
             <h1>Latest products</h1>
             {renderProducts()}
-            <PaginateList page={page} pages={pages} />
+            <PaginateList page={page} pages={pages} keyword={keyword} />
         </div>
     );
 };
