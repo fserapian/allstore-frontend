@@ -7,17 +7,19 @@ type PaginateListProps = {
     pages?: number;
 };
 
-const PaginateList = ({ page, pages }: PaginateListProps): ReactElement => {
+const PaginateList = ({ page, pages }: PaginateListProps): ReactElement | null => {
     return (
-        <Pagination>
-            {[...Array(pages).keys()].map((p) => (
-                <LinkContainer to={`/page/${p + 1}`} key={p + 1}>
-                    <Pagination.Item active={p + 1 === page}>
-                        {p + 1}
-                    </Pagination.Item>
-                </LinkContainer>
-            ))}
-        </Pagination>
+        pages && pages > 1 ? (
+            <Pagination>
+                {[...Array(pages).keys()].map((p) => (
+                    <LinkContainer to={`/page/${p + 1}`} key={p + 1}>
+                        <Pagination.Item active={p + 1 === page}>
+                            {p + 1}
+                        </Pagination.Item>
+                    </LinkContainer>
+                ))}
+            </Pagination>
+        ) : null
     );
 };
 
