@@ -7,12 +7,13 @@ import ProductItem from '../components/ProductItem';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MessageAlert from '../components/MessageAlert';
+import PaginateList from '../components/PaginateList';
 
 const HomeScreen = (): ReactElement => {
     const { pageNumber } = useParams();
 
     const {
-        data: { products } = {},
+        data: { products, page, pages } = {},
         error,
         isLoading,
     } = useGetProductsQuery({ pageNumber });
@@ -36,6 +37,7 @@ const HomeScreen = (): ReactElement => {
         <div className="home-screen">
             <h1>Latest products</h1>
             {renderProducts()}
+            <PaginateList page={page} pages={pages} />
         </div>
     );
 };
