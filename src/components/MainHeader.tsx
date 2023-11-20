@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { clearCredentials } from '../slices/authSlice';
 import { CartItemInterface } from '../types/CartItemInterface';
+import SearchBox from './SearchBox';
 
 const MainHeader = (): ReactElement => {
     const { cartItems } = useAppSelector((state) => state.cart);
@@ -81,6 +82,7 @@ const MainHeader = (): ReactElement => {
                             )}
                         </Nav>
                     </Navbar.Collapse>
+                    <SearchBox />
                 </Container>
             </Navbar>
         </header>

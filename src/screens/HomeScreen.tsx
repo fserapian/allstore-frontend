@@ -1,6 +1,7 @@
 import { Row, Col } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { ProductInterface } from '../types/ProductInterface';
 import ProductItem from '../components/ProductItem';
@@ -36,6 +37,8 @@ const HomeScreen = (): ReactElement => {
     return (
         <div className="home-screen">
             <h1>Latest products</h1>
+            {keyword
+                && <Link to="/" className="btn btn-light my-3">Go Back</Link>}
             {renderProducts()}
             <PaginateList page={page} pages={pages} keyword={keyword} />
         </div>
